@@ -1,4 +1,4 @@
 # SO-Final
-Final project of SO(Sistemas operativos-Operative systems)
-Objective:
-Development of a simple operative system file managment system.
+Final project of SO (Sistemas operativos-Operative systems)<br>
+Objective:<br>
+Development of a simple operative system file managment system.<br>
