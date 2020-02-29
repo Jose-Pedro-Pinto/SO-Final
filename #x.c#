@@ -1,0 +1,46 @@
+int get_block(){
+  int block = sb->free_block;
+  sb->free_block = fat[block];
+  fat[block]=-1;
+  sb->n_free_blocks--;
+  return block;
+}
+void free_block(int block){
+  fat[block] = sb->free_block;
+  sb->free_block = block;
+  sb->n_free_blocks++;
+  return;
+}
+dir_entry get_entry(char * name,int cblock){
+  dir_entry *cur_dir = (dir_entry *) BLOCK(cblock);
+  int ents = DIR_ENTRIES_PER_BLOCK-1;
+  int temp = (cur_dir->size-1)%DIR_ENTRIES_PER_BLOCK;
+  while (cblock !=-1){
+    if (fat==-1)
+      ents = temp;
+    for (int i = 0;i<=ents;i++){
+      if (strcmp(name,cur_entry[ents].name)==0)
+	return cur_entry+ents;
+    }
+    cblock=fat[cblock];
+    cur_dir = (dir_entry *) BLOCK(cblock);
+  }
+  return NULL;
+}
+die_entry get_spot(int cblock){
+  dir_entry *cur_dir = (dir_entry *) BLOCK(cblock);
+  int ents = cur_dir->size%DIR_ENTRIES_PER_BLOCK;
+  while (cblock != -1){
+    if (cblock == -1){
+      if (ents == 0){
+	cblock = get_block();
+	fat[cblock] = freeblock;
+	cur_dir = (dir_entry *) BLOCK(cblock);
+      }
+      return cur_dir+ents;
+    }
+    cblock = fat[cblock];
+    cur_dir = (dir_entry *) BLOCK(cblock);
+  }
+  return NULL;
+}
